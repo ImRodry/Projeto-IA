@@ -3,6 +3,7 @@ package algoritmo;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 
 import utils.Commons;
@@ -28,7 +29,6 @@ public class GeneticAlgorithm {
 	private static final int POPULATION_SIZE = 100;
 	private static final int NUM_GENERATIONS = 1000;
 	private static final double MUTATION_RATE = 0.01;
-	private static final int BOARD_SIZE = 8;
 	private static Random random = new Random();
 
 	public GeneticAlgorithm() {
@@ -40,13 +40,9 @@ public class GeneticAlgorithm {
 		// Evolve the population for a fixed number of generations
 		for (int i = 0; i < NUM_GENERATIONS; i++) {
 			// Sort the population by fitness
-			Arrays.sort(population);
+			Arrays.sort(population, (a, b) -> a.getFitness() - b.getFitness());
 			// Print the best solution of this generation
 			System.out.println("Generation " + i + ": " + population[0]);
-			// Check if we have found a solution
-			if (population[0].getFitness() == 0) {
-				break;
-			}
 			// Create the next generation
 			FeedforwardNeuralNetwork[] newPopulation = new FeedforwardNeuralNetwork[POPULATION_SIZE];
 			for (int j = 0; j < POPULATION_SIZE; j++) {
@@ -78,28 +74,31 @@ public class GeneticAlgorithm {
 		for (int i = 0; i < 10; i++) {
 			tournament.add(population[random.nextInt(population.length)]);
 		}
-		Collections.sort(tournament);
+		Collections.sort(tournament, (a, b) -> a.getFitness() - b.getFitness());
 		return tournament.get(0);
 	}
 
 	// Crossover two parents to create a new child
 	private FeedforwardNeuralNetwork crossover(FeedforwardNeuralNetwork parent1, FeedforwardNeuralNetwork parent2) {
-		FeedforwardNeuralNetwork child = new FeedforwardNeuralNetwork();
-		for (int i = 0; i < BOARD_SIZE; i++) {
-			if (random.nextDouble() < 0.5) {
-				child.setRow(i, parent1.getRows()[i]);
+		double[] parent1Values = parent1.getNeuralNetwork();
+		double[] parent2Values = parent2.getNeuralNetwork();
+		double[] childValues = new double[parent1Values.length];
+		for (int i = 0; i < childValues.length; i++) {
+			if (random.nextDouble() < 0.5) { // TODO k-point crossover
+				childValues[i] = parent1Values[i];
 			} else {
-				child.setRow(i, parent2.getRows()[i]);
+				childValues[i] = parent2Values[i];
 			}
 		}
-		return child;
+		return new FeedforwardNeuralNetwork(Commons.BREAKOUT_STATE_SIZE, Commons.BREAKOUT_HIDDEN_DIM,
+				Commons.BREAKOUT_NUM_ACTIONS, childValues);
 	}
 
 	// Mutate a FeedforwardNeuralNetwork by randomly changing one of its positions
 	private void mutate(FeedforwardNeuralNetwork FeedforwardNeuralNetwork) {
 		if (random.nextDouble() < MUTATION_RATE) {
-			int row = random.nextInt(BOARD_SIZE);
-			int col = random.nextInt(BOARD_SIZE);
+			int row = random.nextInt();
+			int col = random.nextInt();
 			FeedforwardNeuralNetwork.setRow(row, col);
 		}
 	}

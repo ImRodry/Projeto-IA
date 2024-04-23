@@ -36,7 +36,7 @@ public class BreakoutBoard extends JPanel {
 	private GameController controller;
 	private boolean withGui;
 	private Random r = new Random();
-	private double time;
+	private int time;
 	private int kills;
 
 	public BreakoutBoard() {
@@ -106,7 +106,7 @@ public class BreakoutBoard extends JPanel {
 		r.setSeed(seed);
 	}
 
-	public double getFitness() {
+	public int getFitness() {
 		return kills * 100000 + 100000 - time;
 	}
 
