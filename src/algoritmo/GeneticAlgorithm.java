@@ -44,7 +44,7 @@ public class GeneticAlgorithm {
 		// Evolve the population for a fixed number of generations
 		for (int i = 0; i < NUM_GENERATIONS; i++) {
 			// Sort the population by fitness
-			Arrays.sort(population, (a, b) -> a.getFitness() - b.getFitness());
+			Arrays.sort(population, (a, b) -> b.getFitness() - a.getFitness());
 			// Print the best solution of this generation
 			System.out.println("Generation " + i + ": " + population[0]);
 			// Create the next generation
@@ -65,7 +65,7 @@ public class GeneticAlgorithm {
 			population = newPopulation;
 		}
 		// Print the best solution we found
-		Arrays.sort(population, (a, b) -> a.getFitness() - b.getFitness());
+		Arrays.sort(population, (a, b) -> b.getFitness() - a.getFitness());
 		bestSolution = population[0];
 		System.out.println("Best solution found: " + population[0]);
 	}
@@ -73,7 +73,7 @@ public class GeneticAlgorithm {
 	public static void main(String[] args) {
 		new GeneticAlgorithm();
 		new Breakout(new FeedforwardNeuralNetwork(Commons.BREAKOUT_STATE_SIZE, Commons.BREAKOUT_HIDDEN_DIM,
-		Commons.BREAKOUT_NUM_ACTIONS, bestSolution.getNeuralNetwork(), true), 1);
+				Commons.BREAKOUT_NUM_ACTIONS, bestSolution.getNeuralNetwork(), true), 1);
 	}
 
 	// Select a parent from the population using tournament selection
@@ -82,7 +82,7 @@ public class GeneticAlgorithm {
 		for (int i = 0; i < TOURNAMENT_SIZE; i++) {
 			tournament.add(population[random.nextInt(population.length)]);
 		}
-		Collections.sort(tournament, (a, b) -> a.getFitness() - b.getFitness());
+		Collections.sort(tournament, (a, b) -> b.getFitness() - a.getFitness());
 		return tournament.get(0);
 	}
 
