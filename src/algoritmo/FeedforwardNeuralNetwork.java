@@ -172,7 +172,7 @@ public class FeedforwardNeuralNetwork implements GameController {
 		FeedforwardNeuralNetwork nn_values = new FeedforwardNeuralNetwork(3, 2, 1, values);
 		System.out.println(nn_values);
 		System.out.println("Forward result:");
-		double[] input = { 0.0, 0.0, 1.0 };
+		int[] input = { 0, 0, 1 };
 		double[] result = nn_values.forward(input);
 		for (int i = 0; i < result.length; i++) {
 			System.out.println(" Result for neuron ouput" + (i + 1) +
@@ -182,7 +182,10 @@ public class FeedforwardNeuralNetwork implements GameController {
 
 	@Override
 	public int nextMove(int[] currentState) {
-		return (int)(Math.random() * Commons.BREAKOUT_NUM_ACTIONS + 1);
+		double[] outputLayer = forward(currentState);
+		if (outputLayer[0] > outputLayer[1])
+			return BreakoutBoard.LEFT;
+		return BreakoutBoard.RIGHT;
 	}
 
 	public int getFitness() {
