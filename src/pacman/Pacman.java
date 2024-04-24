@@ -1,10 +1,6 @@
 package pacman;
 
 import java.awt.EventQueue;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
 
 import javax.swing.JFrame;
 

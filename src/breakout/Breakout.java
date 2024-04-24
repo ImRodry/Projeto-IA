@@ -3,7 +3,6 @@ package breakout;
 import javax.swing.JFrame;
 
 import algoritmo.FeedforwardNeuralNetwork;
-import pacman.RandomController;
 import utils.Commons;
 import utils.GameController;
 
@@ -23,7 +22,7 @@ public class Breakout extends JFrame {
 	}
 
 	public static void main(String[] args) {
-		Breakout b = new Breakout(new FeedforwardNeuralNetwork(Commons.BREAKOUT_STATE_SIZE, 4, 1), 1);
+		new Breakout(new FeedforwardNeuralNetwork(Commons.BREAKOUT_STATE_SIZE, 4, 1), 1);
 	}
 
 }

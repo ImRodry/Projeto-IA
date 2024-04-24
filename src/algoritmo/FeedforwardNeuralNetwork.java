@@ -3,7 +3,6 @@ package algoritmo;
 import java.util.Random;
 
 import breakout.BreakoutBoard;
-import utils.Commons;
 import utils.GameController;
 
 public class FeedforwardNeuralNetwork implements GameController {

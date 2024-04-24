@@ -3,7 +3,6 @@ package algoritmo;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
 import java.util.Random;
 
 import utils.Commons;
@@ -36,7 +35,8 @@ public class GeneticAlgorithm {
 		// Initialize the population
 		FeedforwardNeuralNetwork[] population = new FeedforwardNeuralNetwork[POPULATION_SIZE];
 		for (int i = 0; i < POPULATION_SIZE; i++) {
-			population[i] = new FeedforwardNeuralNetwork(Commons.BREAKOUT_STATE_SIZE, Commons.BREAKOUT_HIDDEN_DIM, Commons.BREAKOUT_NUM_ACTIONS);
+			population[i] = new FeedforwardNeuralNetwork(Commons.BREAKOUT_STATE_SIZE, Commons.BREAKOUT_HIDDEN_DIM,
+					Commons.BREAKOUT_NUM_ACTIONS);
 		}
 		// Evolve the population for a fixed number of generations
 		for (int i = 0; i < NUM_GENERATIONS; i++) {
