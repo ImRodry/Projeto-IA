@@ -30,6 +30,14 @@ public class FeedforwardNeuralNetwork implements GameController {
 		applyWeightsAndBiases(values);
 	}
 
+	public FeedforwardNeuralNetwork(int inputDim, int hiddenDim, int outputDim, double[] values, boolean withGui) {
+		this.inputDim = inputDim;
+		this.hiddenDim = hiddenDim;
+		this.outputDim = outputDim;
+		applyWeightsAndBiases(values);
+		board = new BreakoutBoard(this, withGui, new Random().nextInt(1000000));
+	}
+
 	public void applyWeightsAndBiases(double[] values) {
 		hiddenWeights = new double[inputDim][hiddenDim];
 		outputWeights = new double[hiddenDim][outputDim];
@@ -133,37 +141,7 @@ public class FeedforwardNeuralNetwork implements GameController {
 
 	@Override
 	public String toString() {
-		String result = "Neural Network: \nNumber of inputs: "
-				+ inputDim + "\n"
-				+ "Weights between input and hidden layer with " + hiddenDim + " neurons: \n";
-		String hidden = "";
-		for (int input = 0; input < inputDim; input++) {
-			for (int i = 0; i < hiddenDim; i++) {
-				hidden += " w" + (input + 1) + (i + 1) + ": "
-						+ hiddenWeights[input][i] + "\n";
-			}
-		}
-		result += hidden;
-		String biasHidden = "Hidden biases: \n";
-		for (int i = 0; i < hiddenDim; i++) {
-			biasHidden += " b " + (i + 1) + ": " + hiddenBiases[i] + "\n";
-		}
-		result += biasHidden;
-		String output = "Weights between hidden and output layer with "
-				+ outputDim + " neurons: \n";
-		for (int hiddenw = 0; hiddenw < hiddenDim; hiddenw++) {
-			for (int i = 0; i < outputDim; i++) {
-				output += " w" + (hiddenw + 1) + "o" + (i + 1) + ": "
-						+ outputWeights[hiddenw][i] + "\n";
-			}
-		}
-		result += output;
-		String biasOutput = "Ouput biases: \n";
-		for (int i = 0; i < outputDim; i++) {
-			biasOutput += " bo" + (i + 1) + ": " + outputBiases[i] + "\n";
-		}
-		result += biasOutput;
-		return result;
+		return "Population with best fitness: " + getFitness();
 	}
 
 	public static void main(String[] args) {

@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Random;
 
+import breakout.Breakout;
+
 import utils.Commons;
 
 public class GeneticAlgorithm {
@@ -30,6 +32,7 @@ public class GeneticAlgorithm {
 	private static final double MUTATION_RATE = 0.01;
 	private static final int TOURNAMENT_SIZE = 10;
 	private static Random random = new Random();
+	private static FeedforwardNeuralNetwork bestSolution;
 
 	public GeneticAlgorithm() {
 		// Initialize the population
@@ -63,11 +66,14 @@ public class GeneticAlgorithm {
 		}
 		// Print the best solution we found
 		Arrays.sort(population, (a, b) -> a.getFitness() - b.getFitness());
+		bestSolution = population[0];
 		System.out.println("Best solution found: " + population[0]);
 	}
 
 	public static void main(String[] args) {
 		new GeneticAlgorithm();
+		new Breakout(new FeedforwardNeuralNetwork(Commons.BREAKOUT_STATE_SIZE, Commons.BREAKOUT_HIDDEN_DIM,
+		Commons.BREAKOUT_NUM_ACTIONS, bestSolution.getNeuralNetwork(), true), 1);
 	}
 
 	// Select a parent from the population using tournament selection
