@@ -56,6 +56,7 @@ public class GeneticAlgorithm {
 				mutate(child);
 				// Add the child to the new population
 				newPopulation[j] = child;
+				child.runSimulation();
 			}
 			// Replace the old population with the new population
 			population = newPopulation;
