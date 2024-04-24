@@ -35,7 +35,7 @@ public class GeneticAlgorithm {
 		// Initialize the population
 		FeedforwardNeuralNetwork[] population = new FeedforwardNeuralNetwork[POPULATION_SIZE];
 		for (int i = 0; i < POPULATION_SIZE; i++) {
-			population[i] = new FeedforwardNeuralNetwork(Commons.BREAKOUT_STATE_SIZE, Commons.BREAKOUT_HIDDEN_DIM, 1);
+			population[i] = new FeedforwardNeuralNetwork(Commons.BREAKOUT_STATE_SIZE, Commons.BREAKOUT_HIDDEN_DIM, Commons.BREAKOUT_NUM_ACTIONS);
 		}
 		// Evolve the population for a fixed number of generations
 		for (int i = 0; i < NUM_GENERATIONS; i++) {
