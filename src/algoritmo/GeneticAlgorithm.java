@@ -35,7 +35,7 @@ public class GeneticAlgorithm {
 		// Initialize the population
 		FeedforwardNeuralNetwork[] population = new FeedforwardNeuralNetwork[POPULATION_SIZE];
 		for (int i = 0; i < POPULATION_SIZE; i++) {
-			population[i] = new FeedforwardNeuralNetwork(Commons.BREAKOUT_STATE_SIZE, 4, 1);
+			population[i] = new FeedforwardNeuralNetwork(Commons.BREAKOUT_STATE_SIZE, Commons.BREAKOUT_HIDDEN_DIM, 1);
 		}
 		// Evolve the population for a fixed number of generations
 		for (int i = 0; i < NUM_GENERATIONS; i++) {
@@ -95,11 +95,10 @@ public class GeneticAlgorithm {
 	}
 
 	// Mutate a FeedforwardNeuralNetwork by randomly changing one of its positions
-	private void mutate(FeedforwardNeuralNetwork FeedforwardNeuralNetwork) {
+	private void mutate(FeedforwardNeuralNetwork feedforwardNeuralNetwork) {
+		double[] values = feedforwardNeuralNetwork.getNeuralNetwork();
 		if (random.nextDouble() < MUTATION_RATE) {
-			int row = random.nextInt();
-			int col = random.nextInt();
-			FeedforwardNeuralNetwork.setRow(row, col);
+			values[random.nextInt(values.length)] = random.nextDouble();
 		}
 	}
 }

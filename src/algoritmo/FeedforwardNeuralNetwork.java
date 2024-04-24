@@ -28,6 +28,10 @@ public class FeedforwardNeuralNetwork implements GameController {
 		this.inputDim = inputDim;
 		this.hiddenDim = hiddenDim;
 		this.outputDim = outputDim;
+		applyWeightsAndBiases(values);
+	}
+
+	public void applyWeightsAndBiases(double[] values) {
 		hiddenWeights = new double[inputDim][hiddenDim];
 		outputWeights = new double[hiddenDim][outputDim];
 		hiddenBiases = new double[hiddenDim];
@@ -46,7 +50,6 @@ public class FeedforwardNeuralNetwork implements GameController {
 		for (int i = 0; i < hiddenDim; i++) {
 			hiddenBiases[i] = values[index++];
 		}
-
 		for (int i = 0; i < hiddenDim; i++) {
 			for (int j = 0; j < outputDim; j++) {
 				outputWeights[i][j] = values[index++];
