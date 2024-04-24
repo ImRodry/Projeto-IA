@@ -60,7 +60,7 @@ public class FeedforwardNeuralNetwork implements GameController {
 		}
 	}
 
-	public double[] forward(double[] inputValues) {
+	public double[] forward(int[] inputValues) {
 		if (inputValues.length != inputDim) {
 			throw new IllegalArgumentException("Invalid number of input values");
 		}
@@ -111,20 +111,23 @@ public class FeedforwardNeuralNetwork implements GameController {
 	}
 
 	private void initializeParameters() {
-		hiddenWeights = new double[hiddenDim][inputDim];
-		outputWeights = new double[outputDim][hiddenDim];
+		hiddenWeights = new double[inputDim][hiddenDim];
+		outputWeights = new double[hiddenDim][outputDim];
 		hiddenBiases = new double[hiddenDim];
 		outputBiases = new double[outputDim];
+
+		// The for loop is intentionally swapped here so that the biases can also be
+		// generated without requiring an extra loop
 		for (int i = 0; i < hiddenDim; i++) {
 			hiddenBiases[i] = Math.random() / 2;
 			for (int j = 0; j < inputDim; j++) {
-				hiddenWeights[i][j] = Math.random() / 2;
+				hiddenWeights[j][i] = Math.random() / 2;
 			}
 		}
 		for (int i = 0; i < outputDim; i++) {
 			outputBiases[i] = Math.random() / 2;
 			for (int j = 0; j < hiddenDim; j++) {
-				outputWeights[i][j] = Math.random() / 2;
+				outputWeights[j][i] = Math.random() / 2;
 			}
 		}
 	}
@@ -133,7 +136,7 @@ public class FeedforwardNeuralNetwork implements GameController {
 	public String toString() {
 		String result = "Neural Network: \nNumber of inputs: "
 				+ inputDim + "\n"
-				+ "Weights between input and hidden layer with " + hiddenDim + "neurons: \n";
+				+ "Weights between input and hidden layer with " + hiddenDim + " neurons: \n";
 		String hidden = "";
 		for (int input = 0; input < inputDim; input++) {
 			for (int i = 0; i < hiddenDim; i++) {
@@ -184,5 +187,9 @@ public class FeedforwardNeuralNetwork implements GameController {
 
 	public int getFitness() {
 		return board.getFitness();
+	}
+
+	public void runSimulation() {
+		board.runSimulation();
 	}
 }
