@@ -29,6 +29,7 @@ public class GeneticAlgorithm {
 	private static final int POPULATION_SIZE = 100;
 	private static final int NUM_GENERATIONS = 1000;
 	private static final double MUTATION_RATE = 0.01;
+	private static final int TOURNAMENT_SIZE = 10;
 	private static Random random = new Random();
 
 	public GeneticAlgorithm() {
@@ -60,7 +61,7 @@ public class GeneticAlgorithm {
 			population = newPopulation;
 		}
 		// Print the best solution we found
-		Arrays.sort(population);
+		Arrays.sort(population, (a, b) -> a.getFitness() - b.getFitness());
 		System.out.println("Best solution found: " + population[0]);
 	}
 
@@ -71,7 +72,7 @@ public class GeneticAlgorithm {
 	// Select a parent from the population using tournament selection
 	private FeedforwardNeuralNetwork selectParent(FeedforwardNeuralNetwork[] population) {
 		ArrayList<FeedforwardNeuralNetwork> tournament = new ArrayList<>();
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < TOURNAMENT_SIZE; i++) {
 			tournament.add(population[random.nextInt(population.length)]);
 		}
 		Collections.sort(tournament, (a, b) -> a.getFitness() - b.getFitness());
