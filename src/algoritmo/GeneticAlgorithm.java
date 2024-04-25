@@ -46,7 +46,7 @@ public class GeneticAlgorithm {
 			// Sort the population by fitness
 			Arrays.sort(population, (a, b) -> b.getFitness() - a.getFitness());
 			// Print the best solution of this generation
-			System.out.println("Generation " + i + ": " + population[0]);
+			System.out.println("Generation " + i + ": " + population[0].getFitness());
 			// Create the next generation
 			FeedforwardNeuralNetwork[] newPopulation = new FeedforwardNeuralNetwork[POPULATION_SIZE];
 			for (int j = 0; j < POPULATION_SIZE; j++) {
@@ -66,8 +66,8 @@ public class GeneticAlgorithm {
 		}
 		// Print the best solution we found
 		Arrays.sort(population, (a, b) -> b.getFitness() - a.getFitness());
-		bestSolution = population[0];
 		System.out.println("Best solution found: " + population[0]);
+		bestSolution = population[0];
 	}
 
 	public static void main(String[] args) {
