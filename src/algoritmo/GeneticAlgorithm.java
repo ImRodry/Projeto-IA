@@ -51,15 +51,17 @@ public class GeneticAlgorithm {
 			FeedforwardNeuralNetwork[] newPopulation = new FeedforwardNeuralNetwork[POPULATION_SIZE];
 			for (int j = 0; j < POPULATION_SIZE; j++) {
 				// Select two parents from the population
-				FeedforwardNeuralNetwork parent1 = selectParent(population);
-				FeedforwardNeuralNetwork parent2 = selectParent(population);
+				double[] parent1 = selectParent(population);
+				double[] parent2 = selectParent(population);
 				// Crossover the parents to create a new child
-				FeedforwardNeuralNetwork child = crossover(parent1, parent2);
+				double[] child = crossover(parent1, parent2);
 				// Mutate the child
 				mutate(child);
 				// Add the child to the new population
-				newPopulation[j] = child;
-				child.runSimulation();
+				newPopulation[j] = new FeedforwardNeuralNetwork(Commons.BREAKOUT_STATE_SIZE,
+						Commons.BREAKOUT_HIDDEN_DIM,
+						Commons.BREAKOUT_NUM_ACTIONS, child);
+				newPopulation[j].runSimulation();
 			}
 			// Replace the old population with the new population
 			population = newPopulation;
@@ -77,36 +79,32 @@ public class GeneticAlgorithm {
 	}
 
 	// Select a parent from the population using tournament selection
-	private FeedforwardNeuralNetwork selectParent(FeedforwardNeuralNetwork[] population) {
+	private double[] selectParent(FeedforwardNeuralNetwork[] population) {
 		ArrayList<FeedforwardNeuralNetwork> tournament = new ArrayList<>();
 		for (int i = 0; i < TOURNAMENT_SIZE; i++) {
 			tournament.add(population[random.nextInt(population.length)]);
 		}
 		Collections.sort(tournament, (a, b) -> b.getFitness() - a.getFitness());
-		return tournament.get(0);
+		return tournament.get(0).getNeuralNetwork();
 	}
 
 	// Crossover two parents to create a new child
-	private FeedforwardNeuralNetwork crossover(FeedforwardNeuralNetwork parent1, FeedforwardNeuralNetwork parent2) {
-		double[] parent1Values = parent1.getNeuralNetwork();
-		double[] parent2Values = parent2.getNeuralNetwork();
-		double[] childValues = new double[parent1Values.length];
+	private double[] crossover(double[] parent1, double[] parent2) {
+		double[] childValues = new double[parent1.length];
 		for (int i = 0; i < childValues.length; i++) {
 			if (random.nextDouble() < 0.5) { // TODO k-point crossover
-				childValues[i] = parent1Values[i];
+				childValues[i] = parent1[i];
 			} else {
-				childValues[i] = parent2Values[i];
+				childValues[i] = parent2[i];
 			}
 		}
-		return new FeedforwardNeuralNetwork(Commons.BREAKOUT_STATE_SIZE, Commons.BREAKOUT_HIDDEN_DIM,
-				Commons.BREAKOUT_NUM_ACTIONS, childValues);
+		return childValues;
 	}
 
 	// Mutate a FeedforwardNeuralNetwork by randomly changing one of its positions
-	private void mutate(FeedforwardNeuralNetwork feedforwardNeuralNetwork) {
-		double[] values = feedforwardNeuralNetwork.getNeuralNetwork();
 		if (random.nextDouble() < MUTATION_RATE) {
 			values[random.nextInt(values.length)] = random.nextDouble();
+	private void mutate(double[] feedforwardNeuralNetwork) {
 		}
 	}
 }
