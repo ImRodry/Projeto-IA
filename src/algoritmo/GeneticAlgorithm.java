@@ -49,7 +49,8 @@ public class GeneticAlgorithm {
 			System.out.println("Generation " + i + ": " + population[0].getFitness());
 			// Create the next generation
 			FeedforwardNeuralNetwork[] newPopulation = new FeedforwardNeuralNetwork[POPULATION_SIZE];
-			for (int j = 0; j < POPULATION_SIZE; j++) {
+			newPopulation[0] = population[0];
+			for (int j = 1; j < POPULATION_SIZE; j++) {
 				// Select two parents from the population
 				double[] parent1 = selectParent(population);
 				double[] parent2 = selectParent(population);
@@ -102,9 +103,11 @@ public class GeneticAlgorithm {
 	}
 
 	// Mutate a FeedforwardNeuralNetwork by randomly changing one of its positions
-		if (random.nextDouble() < MUTATION_RATE) {
-			values[random.nextInt(values.length)] = random.nextDouble();
 	private void mutate(double[] feedforwardNeuralNetwork) {
+		for (int i = 0; i < feedforwardNeuralNetwork.length; i++) {
+			// Random value between -MUTATION_RATE / 2 and MUTATION_RATE / 2
+			double mutationValue = (random.nextDouble() - 0.5) * MUTATION_RATE;
+			feedforwardNeuralNetwork[i] += mutationValue;
 		}
 	}
 }
