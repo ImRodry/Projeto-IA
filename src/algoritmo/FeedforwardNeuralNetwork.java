@@ -3,6 +3,7 @@ package algoritmo;
 import java.util.Random;
 
 import breakout.BreakoutBoard;
+import utils.Commons;
 import utils.GameController;
 
 public class FeedforwardNeuralNetwork implements GameController {
@@ -44,7 +45,7 @@ public class FeedforwardNeuralNetwork implements GameController {
 		hiddenBiases = new double[hiddenDim];
 		outputBiases = new double[outputDim];
 
-		if (values.length != inputDim * hiddenDim + hiddenDim + hiddenDim * outputDim + outputDim) {
+		if (values.length != Commons.BREAKOUT_NETWORK_SIZE) {
 			throw new IllegalArgumentException("Invalid number of parameters");
 		}
 
@@ -95,7 +96,7 @@ public class FeedforwardNeuralNetwork implements GameController {
 	}
 
 	public double[] getNeuralNetwork() {
-		double[] result = new double[inputDim * hiddenDim + hiddenDim + hiddenDim * outputDim + outputDim];
+		double[] result = new double[Commons.BREAKOUT_NETWORK_SIZE];
 		int index = 0;
 		for (int i = 0; i < inputDim; i++) {
 			for (int j = 0; j < hiddenDim; j++) {
