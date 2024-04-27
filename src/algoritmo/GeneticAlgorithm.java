@@ -14,7 +14,8 @@ import utils.Commons;
 
 public class GeneticAlgorithm {
 	private static final BoardTypes BOARD_TYPE = BoardTypes.BREAKOUT;
-	private static final int POPULATION_SIZE = BOARD_TYPE == BoardTypes.BREAKOUT  ? 100  : 10; // The file size for 100 Pacman individuals is too large 
+	// The file size for 100 Pacman individuals is too large 
+	private static final int POPULATION_SIZE = BOARD_TYPE == BoardTypes.BREAKOUT ? 100  : 10;
 	private static final int NUM_GENERATIONS = 10000;
 	private static final double MUTATION_RATE = 0.01;
 	private static final int TOURNAMENT_SIZE = 10;

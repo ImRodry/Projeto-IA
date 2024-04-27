@@ -30,11 +30,11 @@ public class PacmanBoard extends JPanel implements ActionListener, Board {
 
 	private Random r = new Random();
 
-	private static final int NONE = 0;
-	private static final int LEFT = 1;
-	private static final int RIGHT = 2;
-	private static final int UP = 3;
-	private static final int DOWN = 4;
+	public static final int NONE = 0;
+	public static final int LEFT = 1;
+	public static final int RIGHT = 2;
+	public static final int UP = 3;
+	public static final int DOWN = 4;
 
 	private Dimension d;
 	private final Font smallFont = new Font("Helvetica", Font.BOLD, 14);
@@ -97,10 +97,6 @@ public class PacmanBoard extends JPanel implements ActionListener, Board {
 	private boolean withGui;
 
 	private int steps = 0;
-
-	private int previous_x;
-
-	private int previous_y;
 
 	public PacmanBoard(GameController controller, boolean withGui, int seed) {
 		this.controller = controller;
@@ -692,9 +688,6 @@ public class PacmanBoard extends JPanel implements ActionListener, Board {
 			int pos = ghost_x[i] / BLOCK_SIZE + N_BLOCKS * (int) (ghost_y[i] / BLOCK_SIZE);
 			state[pos] = 2;
 		}
-
-		previous_x = pacman_x;
-		previous_y = pacman_y;
 
 		int pos = pacman_x / BLOCK_SIZE + N_BLOCKS * (int) (pacman_y / BLOCK_SIZE);
 		state[pos] = 3;

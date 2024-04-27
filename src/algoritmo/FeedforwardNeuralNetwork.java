@@ -174,9 +174,24 @@ public class FeedforwardNeuralNetwork implements GameController {
 	@Override
 	public int nextMove(int[] currentState) {
 		double[] outputLayer = forward(currentState);
-		if (outputLayer[0] > outputLayer[1])
-			return BreakoutBoard.LEFT;
-		return BreakoutBoard.RIGHT;
+		// Since Breakout doesn't have NONE we can't use the same logic for both games
+		if (inputDim == Commons.BREAKOUT_STATE_SIZE) {
+			if (outputLayer[0] > outputLayer[1])
+				return BreakoutBoard.LEFT;
+			return BreakoutBoard.RIGHT;
+		} else {
+			int chosenMove = PacmanBoard.NONE;
+			double highestValue = outputLayer[0];
+
+			for (int i = 1; i < outputLayer.length; i++) {
+				if (outputLayer[i] > highestValue) {
+					chosenMove = i;
+					highestValue = outputLayer[i];
+				}
+			}
+
+			return chosenMove;
+		}
 	}
 
 	public double getFitness() {
