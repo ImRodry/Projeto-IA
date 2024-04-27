@@ -168,7 +168,7 @@ public class GeneticAlgorithm {
 				population[index++] = newNetwork;
 			}
 			scanner.close();
-			if (population.length != POPULATION_SIZE) {
+			if (index != POPULATION_SIZE) {
 				throw new IllegalArgumentException("Invalid number of individuals in the file");
 			}
 			return population;
