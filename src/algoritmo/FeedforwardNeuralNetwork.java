@@ -14,7 +14,7 @@ public class FeedforwardNeuralNetwork implements GameController {
 	private double[][] outputWeights;
 	private double[] hiddenBiases;
 	private double[] outputBiases;
-	private BreakoutBoard board = new BreakoutBoard(this, false, new Random().nextInt(1000000));
+	private BreakoutBoard board = new BreakoutBoard(this, false, 0);
 
 	public FeedforwardNeuralNetwork(int inputDim, int hiddenDim, int outputDim) {
 		this.inputDim = inputDim;
