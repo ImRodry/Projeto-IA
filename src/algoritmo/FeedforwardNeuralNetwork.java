@@ -31,14 +31,6 @@ public class FeedforwardNeuralNetwork implements GameController {
 		applyWeightsAndBiases(values);
 	}
 
-	public FeedforwardNeuralNetwork(int inputDim, int hiddenDim, int outputDim, double[] values, boolean withGui) {
-		this.inputDim = inputDim;
-		this.hiddenDim = hiddenDim;
-		this.outputDim = outputDim;
-		applyWeightsAndBiases(values);
-		board = new BreakoutBoard(this, withGui, new Random().nextInt(1000000));
-	}
-
 	public void applyWeightsAndBiases(double[] values) {
 		hiddenWeights = new double[inputDim][hiddenDim];
 		outputWeights = new double[hiddenDim][outputDim];

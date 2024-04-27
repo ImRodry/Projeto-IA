@@ -56,24 +56,28 @@ public class GeneticAlgorithm {
 			// Print the best solution of this generation
 			System.out.println("Generation " + i + ": " + population[0].getFitness());
 			// Create the next generation
-			FeedforwardNeuralNetwork[] newPopulation = new FeedforwardNeuralNetwork[POPULATION_SIZE];
-			newPopulation[0] = population[0];
-			for (int j = 1; j < POPULATION_SIZE; j++) {
+			for (int j = 0; j < POPULATION_SIZE; j++) {
 				// Select two parents from the population
-				double[] parent1 = selectParent(population);
-				double[] parent2 = selectParent(population);
+				int parent1Index = selectParent();
+				int parent2Index = selectParent();
+				while (parent2Index == parent1Index)
+					parent2Index = selectParent();
 				// Crossover the parents to create a new child
-				double[] child = crossover(parent1, parent2);
+				double[] childNetwork = crossover(population[parent1Index].getNeuralNetwork(),
+						population[parent2Index].getNeuralNetwork());
 				// Mutate the child
-				mutate(child);
-				// Add the child to the new population
-				newPopulation[j] = new FeedforwardNeuralNetwork(Commons.BREAKOUT_STATE_SIZE,
+				mutate(childNetwork);
+				FeedforwardNeuralNetwork child = new FeedforwardNeuralNetwork(Commons.BREAKOUT_STATE_SIZE,
 						Commons.BREAKOUT_HIDDEN_DIM,
-						Commons.BREAKOUT_NUM_ACTIONS, child);
-				newPopulation[j].runSimulation();
+						Commons.BREAKOUT_NUM_ACTIONS, childNetwork);
+				child.runSimulation();
+				// Add the child to the population
+				if (population[parent1Index].getFitness() >= population[parent2Index].getFitness()) {
+					population[parent2Index] = child;
+				} else {
+					population[parent1Index] = child;
+				}
 			}
-			// Replace the old population with the new population
-			population = newPopulation;
 		}
 		// Print the best solution we found
 		Arrays.sort(population, (a, b) -> b.getFitness() - a.getFitness());
@@ -85,17 +89,12 @@ public class GeneticAlgorithm {
 	public static void main(String[] args) {
 		new GeneticAlgorithm();
 		new Breakout(new FeedforwardNeuralNetwork(Commons.BREAKOUT_STATE_SIZE, Commons.BREAKOUT_HIDDEN_DIM,
-				Commons.BREAKOUT_NUM_ACTIONS, bestSolution.getNeuralNetwork(), true), 1);
+				Commons.BREAKOUT_NUM_ACTIONS, bestSolution.getNeuralNetwork()), 0);
 	}
 
-	// Select a parent from the population using tournament selection
-	private double[] selectParent(FeedforwardNeuralNetwork[] population) {
-		ArrayList<FeedforwardNeuralNetwork> tournament = new ArrayList<>();
-		for (int i = 0; i < TOURNAMENT_SIZE; i++) {
-			tournament.add(population[random.nextInt(population.length)]);
-		}
-		Collections.sort(tournament, (a, b) -> b.getFitness() - a.getFitness());
-		return tournament.get(0).getNeuralNetwork();
+	// Select the index of a parent from the population using tournament selection
+	private int selectParent() {
+		return random.nextInt(TOURNAMENT_SIZE);
 	}
 
 	// Crossover two parents to create a new child
