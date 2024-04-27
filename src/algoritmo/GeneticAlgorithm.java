@@ -43,7 +43,7 @@ public class GeneticAlgorithm {
 			// Print the best solution of this generation
 			System.out.println("Generation " + i + ": " + population[0].getFitness());
 			// Create the next generation
-			for (int j = 0; j < POPULATION_SIZE; j++) {
+			for (int j = 0; j < POPULATION_SIZE / 2; j++) {
 				// Select two parents from the population
 				int parent1Index = selectParent();
 				int parent2Index = selectParent();
@@ -57,11 +57,7 @@ public class GeneticAlgorithm {
 				FeedforwardNeuralNetwork child = generateNetwork(childNetwork);
 				child.runSimulation();
 				// Add the child to the population
-				if (population[parent1Index].getFitness() >= population[parent2Index].getFitness()) {
-					population[parent2Index] = child;
-				} else {
-					population[parent1Index] = child;
-				}
+				population[POPULATION_SIZE / 2 + j] = child;
 			}
 		}
 		// Print the best solution we found
