@@ -33,6 +33,7 @@ public class GeneticAlgorithm {
 			System.out.println("Failed to read file, creating new population");
 			for (int i = 0; i < POPULATION_SIZE; i++) {
 				population[i] = generateNetwork();
+				population[i].runSimulation();
 			}
 		}
 		// Evolve the population for a fixed number of generations
