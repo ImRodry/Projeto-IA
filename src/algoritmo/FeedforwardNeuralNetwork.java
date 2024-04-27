@@ -18,8 +18,8 @@ public class FeedforwardNeuralNetwork implements GameController {
 		this.inputDim = inputDim;
 		this.hiddenDim = hiddenDim;
 		this.outputDim = outputDim;
-		this.board = inputDim == Commons.BREAKOUT_STATE_SIZE ? new BreakoutBoard(this, false, 0)
-				: new PacmanBoard(this, false, 0);
+		this.board = inputDim == Commons.BREAKOUT_STATE_SIZE ? new BreakoutBoard(this, false, 1)
+				: new PacmanBoard(this, false, 1);
 		initializeParameters();
 	}
 
@@ -28,8 +28,8 @@ public class FeedforwardNeuralNetwork implements GameController {
 		this.inputDim = inputDim;
 		this.hiddenDim = hiddenDim;
 		this.outputDim = outputDim;
-		this.board = inputDim == Commons.BREAKOUT_STATE_SIZE ? new BreakoutBoard(this, false, 0)
-				: new PacmanBoard(this, false, 0);
+		this.board = inputDim == Commons.BREAKOUT_STATE_SIZE ? new BreakoutBoard(this, false, 1)
+				: new PacmanBoard(this, false, 1);
 		applyWeightsAndBiases(values);
 	}
 

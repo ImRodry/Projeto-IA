@@ -13,9 +13,9 @@ import utils.BoardTypes;
 import utils.Commons;
 
 public class GeneticAlgorithm {
-	private static final BoardTypes BOARD_TYPE = BoardTypes.PACMAN;
+	private static final BoardTypes BOARD_TYPE = BoardTypes.BREAKOUT;
 	private static final int POPULATION_SIZE = BOARD_TYPE == BoardTypes.BREAKOUT  ? 100  : 10; // The file size for 100 Pacman individuals is too large 
-	private static final int NUM_GENERATIONS = 10;
+	private static final int NUM_GENERATIONS = 10000;
 	private static final double MUTATION_RATE = 0.01;
 	private static final int TOURNAMENT_SIZE = 10;
 	private static final String FILENAME = BOARD_TYPE == BoardTypes.BREAKOUT ? "breakout.txt" : "pacman.txt";
@@ -89,10 +89,10 @@ public class GeneticAlgorithm {
 		new GeneticAlgorithm();
 		if (BOARD_TYPE == BoardTypes.PACMAN)
 			new Pacman(new FeedforwardNeuralNetwork(Commons.PACMAN_STATE_SIZE, Commons.PACMAN_HIDDEN_DIM,
-					Commons.PACMAN_NUM_ACTIONS, bestSolution.getNeuralNetwork()), 0);
+					Commons.PACMAN_NUM_ACTIONS, bestSolution.getNeuralNetwork()), 1);
 		else
 			new Breakout(new FeedforwardNeuralNetwork(Commons.BREAKOUT_STATE_SIZE, Commons.BREAKOUT_HIDDEN_DIM,
-					Commons.BREAKOUT_NUM_ACTIONS, bestSolution.getNeuralNetwork()), 0);
+					Commons.BREAKOUT_NUM_ACTIONS, bestSolution.getNeuralNetwork()), 1);
 	}
 
 	// Select the index of a parent from the population using tournament selection
