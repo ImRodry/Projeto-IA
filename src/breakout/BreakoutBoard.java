@@ -104,7 +104,7 @@ public class BreakoutBoard extends JPanel implements Board {
 	}
 
 	public double getFitness() {
-		return kills * 100000 + 100000 - time;
+		return kills * 100000 + 100000 - time * 10;
 	}
 
 	private int[] getState() {
