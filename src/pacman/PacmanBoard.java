@@ -19,10 +19,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-import utils.Commons;
-import utils.GameController;
+import utils.*;
 
-public class PacmanBoard extends JPanel implements ActionListener {
+public class PacmanBoard extends JPanel implements ActionListener, Board {
 
 	/**
 	 * 

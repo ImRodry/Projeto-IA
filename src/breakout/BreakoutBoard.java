@@ -16,10 +16,9 @@ import java.util.Random;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-import utils.Commons;
-import utils.GameController;
+import utils.*;
 
-public class BreakoutBoard extends JPanel {
+public class BreakoutBoard extends JPanel implements Board {
 
 	public static final int LEFT = 1;
 	public static final int RIGHT = 2;
@@ -104,7 +103,7 @@ public class BreakoutBoard extends JPanel {
 		r.setSeed(seed);
 	}
 
-	public int getFitness() {
+	public double getFitness() {
 		return kills * 100000 + 100000 - time;
 	}
 

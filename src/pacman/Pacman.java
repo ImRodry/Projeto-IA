@@ -8,9 +8,9 @@ import utils.GameController;
 
 public class Pacman extends JFrame {
 
-	public Pacman(GameController c, boolean b, int seed) {
+	public Pacman(GameController c, int seed) {
 		EventQueue.invokeLater(() -> {
-			add(new PacmanBoard(c, b, seed));
+			add(new PacmanBoard(c, true, seed));
 
 			setTitle("Pacman");
 			setDefaultCloseOperation(EXIT_ON_CLOSE);

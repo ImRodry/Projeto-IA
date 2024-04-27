@@ -1,10 +1,8 @@
 package algoritmo;
 
-import java.util.Random;
-
 import breakout.BreakoutBoard;
-import utils.Commons;
-import utils.GameController;
+import pacman.PacmanBoard;
+import utils.*;
 
 public class FeedforwardNeuralNetwork implements GameController {
 	private int inputDim;
@@ -14,12 +12,14 @@ public class FeedforwardNeuralNetwork implements GameController {
 	private double[][] outputWeights;
 	private double[] hiddenBiases;
 	private double[] outputBiases;
-	private BreakoutBoard board = new BreakoutBoard(this, false, 0);
+	private Board board;
 
 	public FeedforwardNeuralNetwork(int inputDim, int hiddenDim, int outputDim) {
 		this.inputDim = inputDim;
 		this.hiddenDim = hiddenDim;
 		this.outputDim = outputDim;
+		this.board = inputDim == Commons.BREAKOUT_STATE_SIZE ? new BreakoutBoard(this, false, 0)
+				: new PacmanBoard(this, false, 0);
 		initializeParameters();
 	}
 
@@ -28,6 +28,8 @@ public class FeedforwardNeuralNetwork implements GameController {
 		this.inputDim = inputDim;
 		this.hiddenDim = hiddenDim;
 		this.outputDim = outputDim;
+		this.board = inputDim == Commons.BREAKOUT_STATE_SIZE ? new BreakoutBoard(this, false, 0)
+				: new PacmanBoard(this, false, 0);
 		applyWeightsAndBiases(values);
 	}
 
@@ -37,7 +39,8 @@ public class FeedforwardNeuralNetwork implements GameController {
 		hiddenBiases = new double[hiddenDim];
 		outputBiases = new double[outputDim];
 
-		if (values.length != Commons.BREAKOUT_NETWORK_SIZE) {
+		if (values.length != (inputDim == Commons.BREAKOUT_STATE_SIZE ? Commons.BREAKOUT_NETWORK_SIZE
+				: Commons.PACMAN_NETWORK_SIZE)) {
 			throw new IllegalArgumentException("Invalid number of parameters");
 		}
 
@@ -88,7 +91,8 @@ public class FeedforwardNeuralNetwork implements GameController {
 	}
 
 	public double[] getNeuralNetwork() {
-		double[] result = new double[Commons.BREAKOUT_NETWORK_SIZE];
+		double[] result = new double[inputDim == Commons.BREAKOUT_STATE_SIZE ? Commons.BREAKOUT_NETWORK_SIZE
+				: Commons.PACMAN_NETWORK_SIZE];
 		int index = 0;
 		for (int i = 0; i < inputDim; i++) {
 			for (int j = 0; j < hiddenDim; j++) {
@@ -139,9 +143,9 @@ public class FeedforwardNeuralNetwork implements GameController {
 				+ "Weights between input and hidden layer with " + hiddenDim + " neurons: \n";
 		String hidden = "";
 		for (int input = 0; input < inputDim; input++) {
-			for (int i = 0; i < hiddenDim; i++) {
-				hidden += " w" + (input + 1) + (i + 1) + ": "
-						+ hiddenWeights[input][i] + "\n";
+			for (int h = 0; h < hiddenDim; h++) {
+				hidden += " w" + (input + 1) + "_" + (h + 1) + ": "
+						+ hiddenWeights[input][h] + "\n";
 			}
 		}
 		result += hidden;
@@ -152,10 +156,10 @@ public class FeedforwardNeuralNetwork implements GameController {
 		result += biasHidden;
 		String output = "Weights between hidden and output layer with "
 				+ outputDim + " neurons: \n";
-		for (int hiddenw = 0; hiddenw < hiddenDim; hiddenw++) {
+		for (int hiddenW = 0; hiddenW < hiddenDim; hiddenW++) {
 			for (int i = 0; i < outputDim; i++) {
-				output += " w" + (hiddenw + 1) + "o" + (i + 1) + ": "
-						+ outputWeights[hiddenw][i] + "\n";
+				output += " w" + (hiddenW + 1) + "o" + (i + 1) + ": "
+						+ outputWeights[hiddenW][i] + "\n";
 			}
 		}
 		result += output;
@@ -175,7 +179,7 @@ public class FeedforwardNeuralNetwork implements GameController {
 		return BreakoutBoard.RIGHT;
 	}
 
-	public int getFitness() {
+	public double getFitness() {
 		return board.getFitness();
 	}
 

@@ -8,31 +8,17 @@ import java.util.Random;
 import java.util.Scanner;
 
 import breakout.Breakout;
+import pacman.Pacman;
+import utils.BoardTypes;
 import utils.Commons;
 
 public class GeneticAlgorithm {
-	/*
-	 * This implementation uses a population of 100 solutions,
-	 * evolves the population for 1000 generations, and uses tournament selection to
-	 * select parents for crossover. Each solution is represented by an array of
-	 * integers
-	 * representing the column index of each FeedforwardNeuralNetwork in its row.
-	 * The fitness of a
-	 * solution
-	 * is the number of pairs of FeedforwardNeuralNetworks that are attacking each
-	 * other.
-	 * Crossover is performed by randomly selecting a row from each parent, and the
-	 * child is mutated by randomly changing one of its positions with a probability
-	 * of 0.01.
-	 * The best solution found is printed after each generation, and the best
-	 * solution overall
-	 * is printed at the end.
-	 */
+	private static final BoardTypes BOARD_TYPE = BoardTypes.PACMAN;
 	private static final int POPULATION_SIZE = 100;
 	private static final int NUM_GENERATIONS = 1000;
 	private static final double MUTATION_RATE = 0.01;
 	private static final int TOURNAMENT_SIZE = 10;
-	private static final String FILENAME = "network.txt";
+	private static final String FILENAME = BOARD_TYPE == BoardTypes.BREAKOUT ? "breakout.txt" : "pacman.txt";
 	private static Random random = new Random();
 	private static FeedforwardNeuralNetwork bestSolution;
 
@@ -45,14 +31,13 @@ public class GeneticAlgorithm {
 		} catch (Exception e) {
 			System.out.println("Failed to read file, creating new population");
 			for (int i = 0; i < POPULATION_SIZE; i++) {
-				population[i] = new FeedforwardNeuralNetwork(Commons.BREAKOUT_STATE_SIZE, Commons.BREAKOUT_HIDDEN_DIM,
-						Commons.BREAKOUT_NUM_ACTIONS);
+				population[i] = generateNetwork();
 			}
 		}
 		// Evolve the population for a fixed number of generations
 		for (int i = 0; i < NUM_GENERATIONS; i++) {
 			// Sort the population by fitness
-			Arrays.sort(population, (a, b) -> b.getFitness() - a.getFitness());
+			Arrays.sort(population, (a, b) -> (int) (b.getFitness() - a.getFitness()));
 			// Print the best solution of this generation
 			System.out.println("Generation " + i + ": " + population[0].getFitness());
 			// Create the next generation
@@ -67,9 +52,7 @@ public class GeneticAlgorithm {
 						population[parent2Index].getNeuralNetwork());
 				// Mutate the child
 				mutate(childNetwork);
-				FeedforwardNeuralNetwork child = new FeedforwardNeuralNetwork(Commons.BREAKOUT_STATE_SIZE,
-						Commons.BREAKOUT_HIDDEN_DIM,
-						Commons.BREAKOUT_NUM_ACTIONS, childNetwork);
+				FeedforwardNeuralNetwork child = generateNetwork(childNetwork);
 				child.runSimulation();
 				// Add the child to the population
 				if (population[parent1Index].getFitness() >= population[parent2Index].getFitness()) {
@@ -80,16 +63,36 @@ public class GeneticAlgorithm {
 			}
 		}
 		// Print the best solution we found
-		Arrays.sort(population, (a, b) -> b.getFitness() - a.getFitness());
+		Arrays.sort(population, (a, b) -> (int) (b.getFitness() - a.getFitness()));
 		System.out.println("Best solution found: " + population[0]);
 		bestSolution = population[0];
 		writePopulation(population, FILENAME);
 	}
 
+	private FeedforwardNeuralNetwork generateNetwork() {
+		return BOARD_TYPE == BoardTypes.BREAKOUT
+				? new FeedforwardNeuralNetwork(Commons.BREAKOUT_STATE_SIZE, Commons.BREAKOUT_HIDDEN_DIM,
+						Commons.BREAKOUT_NUM_ACTIONS)
+				: new FeedforwardNeuralNetwork(Commons.PACMAN_STATE_SIZE, Commons.PACMAN_HIDDEN_DIM,
+						Commons.PACMAN_NUM_ACTIONS);
+	}
+
+	private FeedforwardNeuralNetwork generateNetwork(double[] values) {
+		return BOARD_TYPE == BoardTypes.BREAKOUT
+				? new FeedforwardNeuralNetwork(Commons.BREAKOUT_STATE_SIZE, Commons.BREAKOUT_HIDDEN_DIM,
+						Commons.BREAKOUT_NUM_ACTIONS, values)
+				: new FeedforwardNeuralNetwork(Commons.PACMAN_STATE_SIZE, Commons.PACMAN_HIDDEN_DIM,
+						Commons.PACMAN_NUM_ACTIONS, values);
+	}
+
 	public static void main(String[] args) {
 		new GeneticAlgorithm();
-		new Breakout(new FeedforwardNeuralNetwork(Commons.BREAKOUT_STATE_SIZE, Commons.BREAKOUT_HIDDEN_DIM,
-				Commons.BREAKOUT_NUM_ACTIONS, bestSolution.getNeuralNetwork()), 0);
+		if (BOARD_TYPE == BoardTypes.PACMAN)
+			new Pacman(new FeedforwardNeuralNetwork(Commons.PACMAN_STATE_SIZE, Commons.PACMAN_HIDDEN_DIM,
+					Commons.PACMAN_NUM_ACTIONS, bestSolution.getNeuralNetwork()), 0);
+		else
+			new Breakout(new FeedforwardNeuralNetwork(Commons.BREAKOUT_STATE_SIZE, Commons.BREAKOUT_HIDDEN_DIM,
+					Commons.BREAKOUT_NUM_ACTIONS, bestSolution.getNeuralNetwork()), 0);
 	}
 
 	// Select the index of a parent from the population using tournament selection
@@ -158,8 +161,7 @@ public class GeneticAlgorithm {
 					network[i] = Double.parseDouble(values[i]);
 				}
 				// Create the new network and run its simulation
-				FeedforwardNeuralNetwork newNetwork = new FeedforwardNeuralNetwork(Commons.BREAKOUT_STATE_SIZE,
-						Commons.BREAKOUT_HIDDEN_DIM, Commons.BREAKOUT_NUM_ACTIONS, network);
+				FeedforwardNeuralNetwork newNetwork = generateNetwork(network);
 				newNetwork.runSimulation();
 				population[index++] = newNetwork;
 			}
