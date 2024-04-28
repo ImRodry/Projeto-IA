@@ -13,11 +13,11 @@ import utils.BoardTypes;
 import utils.Commons;
 
 public class GeneticAlgorithm {
-	private static final BoardTypes BOARD_TYPE = BoardTypes.BREAKOUT;
-	// The file size for 100 Pacman individuals is too large 
-	private static final int POPULATION_SIZE = BOARD_TYPE == BoardTypes.BREAKOUT ? 100  : 10;
-	private static final int NUM_GENERATIONS = 1000;
-	private static final double MUTATION_RATE = 0.08;
+	private static final BoardTypes BOARD_TYPE = BoardTypes.PACMAN;
+	// The file size for 100 Pacman individuals is too large
+	private static final int POPULATION_SIZE = BOARD_TYPE == BoardTypes.BREAKOUT ? 100 : 40;
+	private static final int NUM_GENERATIONS = 100;
+	private static final double MUTATION_RATE = 0.1;
 	private static final int TOURNAMENT_SIZE = 20;
 	private static final String FILENAME = BOARD_TYPE == BoardTypes.BREAKOUT ? "breakout.txt" : "pacman.txt";
 	private static Random random = new Random();
@@ -43,7 +43,7 @@ public class GeneticAlgorithm {
 			// Print the best solution of this generation
 			System.out.println("Generation " + (i + 1) + ": " + population[0].getFitness());
 			// Create the next generation
-			for (int j = 0; j < POPULATION_SIZE; j++) {
+			for (int j = 0; j < POPULATION_SIZE / 2; j++) {
 				// Select two parents from the population
 				int parent1Index = selectParent();
 				int parent2Index = selectParent();
@@ -57,11 +57,7 @@ public class GeneticAlgorithm {
 				FeedforwardNeuralNetwork child = generateNetwork(childNetwork);
 				child.runSimulation();
 				// Add the child to the population
-				if (population[parent1Index].getFitness() >= population[parent2Index].getFitness()) {
-					population[parent2Index] = child;
-				} else {
-					population[parent1Index] = child;
-				}
+				population[POPULATION_SIZE / 2 + j] = child;
 			}
 		}
 		// Print the best solution we found

@@ -29,6 +29,7 @@ public class PacmanBoard extends JPanel implements ActionListener, Board {
 	private static final long serialVersionUID = 1L;
 
 	private Random r = new Random();
+	private int seed;
 
 	public static final int NONE = 0;
 	public static final int LEFT = 1;
@@ -101,6 +102,7 @@ public class PacmanBoard extends JPanel implements ActionListener, Board {
 	public PacmanBoard(GameController controller, boolean withGui, int seed) {
 		this.controller = controller;
 		this.withGui = withGui;
+		this.seed = seed;
 		r.setSeed(seed);
 		initVariables();
 	}
@@ -138,6 +140,7 @@ public class PacmanBoard extends JPanel implements ActionListener, Board {
 	}
 
 	public void runSimulation() {
+		r = new Random(seed);
 		initGame();
 		inGame = true;
 		while (inGame) {
@@ -442,72 +445,72 @@ public class PacmanBoard extends JPanel implements ActionListener, Board {
 	private void drawPacmanUp(Graphics2D g2d) {
 
 		switch (pacmanAnimPos) {
-		case 1:
-			g2d.drawImage(pacman2up, pacman_x + 1, pacman_y + 1, this);
-			break;
-		case 2:
-			g2d.drawImage(pacman3up, pacman_x + 1, pacman_y + 1, this);
-			break;
-		case 3:
-			g2d.drawImage(pacman4up, pacman_x + 1, pacman_y + 1, this);
-			break;
-		default:
-			g2d.drawImage(pacman1, pacman_x + 1, pacman_y + 1, this);
-			break;
+			case 1:
+				g2d.drawImage(pacman2up, pacman_x + 1, pacman_y + 1, this);
+				break;
+			case 2:
+				g2d.drawImage(pacman3up, pacman_x + 1, pacman_y + 1, this);
+				break;
+			case 3:
+				g2d.drawImage(pacman4up, pacman_x + 1, pacman_y + 1, this);
+				break;
+			default:
+				g2d.drawImage(pacman1, pacman_x + 1, pacman_y + 1, this);
+				break;
 		}
 	}
 
 	private void drawPacmanDown(Graphics2D g2d) {
 
 		switch (pacmanAnimPos) {
-		case 1:
-			g2d.drawImage(pacman2down, pacman_x + 1, pacman_y + 1, this);
-			break;
-		case 2:
-			g2d.drawImage(pacman3down, pacman_x + 1, pacman_y + 1, this);
-			break;
-		case 3:
-			g2d.drawImage(pacman4down, pacman_x + 1, pacman_y + 1, this);
-			break;
-		default:
-			g2d.drawImage(pacman1, pacman_x + 1, pacman_y + 1, this);
-			break;
+			case 1:
+				g2d.drawImage(pacman2down, pacman_x + 1, pacman_y + 1, this);
+				break;
+			case 2:
+				g2d.drawImage(pacman3down, pacman_x + 1, pacman_y + 1, this);
+				break;
+			case 3:
+				g2d.drawImage(pacman4down, pacman_x + 1, pacman_y + 1, this);
+				break;
+			default:
+				g2d.drawImage(pacman1, pacman_x + 1, pacman_y + 1, this);
+				break;
 		}
 	}
 
 	private void drawPacnanLeft(Graphics2D g2d) {
 
 		switch (pacmanAnimPos) {
-		case 1:
-			g2d.drawImage(pacman2left, pacman_x + 1, pacman_y + 1, this);
-			break;
-		case 2:
-			g2d.drawImage(pacman3left, pacman_x + 1, pacman_y + 1, this);
-			break;
-		case 3:
-			g2d.drawImage(pacman4left, pacman_x + 1, pacman_y + 1, this);
-			break;
-		default:
-			g2d.drawImage(pacman1, pacman_x + 1, pacman_y + 1, this);
-			break;
+			case 1:
+				g2d.drawImage(pacman2left, pacman_x + 1, pacman_y + 1, this);
+				break;
+			case 2:
+				g2d.drawImage(pacman3left, pacman_x + 1, pacman_y + 1, this);
+				break;
+			case 3:
+				g2d.drawImage(pacman4left, pacman_x + 1, pacman_y + 1, this);
+				break;
+			default:
+				g2d.drawImage(pacman1, pacman_x + 1, pacman_y + 1, this);
+				break;
 		}
 	}
 
 	private void drawPacmanRight(Graphics2D g2d) {
 
 		switch (pacmanAnimPos) {
-		case 1:
-			g2d.drawImage(pacman2right, pacman_x + 1, pacman_y + 1, this);
-			break;
-		case 2:
-			g2d.drawImage(pacman3right, pacman_x + 1, pacman_y + 1, this);
-			break;
-		case 3:
-			g2d.drawImage(pacman4right, pacman_x + 1, pacman_y + 1, this);
-			break;
-		default:
-			g2d.drawImage(pacman1, pacman_x + 1, pacman_y + 1, this);
-			break;
+			case 1:
+				g2d.drawImage(pacman2right, pacman_x + 1, pacman_y + 1, this);
+				break;
+			case 2:
+				g2d.drawImage(pacman3right, pacman_x + 1, pacman_y + 1, this);
+				break;
+			case 3:
+				g2d.drawImage(pacman4right, pacman_x + 1, pacman_y + 1, this);
+				break;
+			default:
+				g2d.drawImage(pacman1, pacman_x + 1, pacman_y + 1, this);
+				break;
 		}
 	}
 
@@ -666,7 +669,7 @@ public class PacmanBoard extends JPanel implements ActionListener, Board {
 	}
 
 	public double getScore() {
-		return score * 1000 + steps / 100;
+		return score * 1000 - steps * 10;
 	}
 
 	@Override

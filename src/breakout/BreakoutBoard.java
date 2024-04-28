@@ -35,6 +35,7 @@ public class BreakoutBoard extends JPanel implements Board {
 	private Random r = new Random();
 	private int time;
 	private int kills;
+	private int paddleHits = 0;
 
 	public BreakoutBoard() {
 		this.withGui = true;
@@ -104,7 +105,12 @@ public class BreakoutBoard extends JPanel implements Board {
 	}
 
 	public double getFitness() {
-		return kills * 100000 + 100000 - time;
+		int killScore = kills * 100000;
+		int timePenalty = 100000 - time;
+		// Gives a penalty if there are more paddle hits than kills but also a bonus if
+		// there are more kills than hits
+		double paddleHitsPenalty = (paddleHits - kills) * 100000;
+		return killScore + timePenalty - paddleHitsPenalty;
 	}
 
 	private int[] getState() {
@@ -147,7 +153,7 @@ public class BreakoutBoard extends JPanel implements Board {
 						bricks[i].getImageHeight(), this);
 			}
 		}
-		g2d.drawString(getFitness() + "", 10, 10);
+		g2d.drawString("Score: " + getFitness() + "; Kills: " + kills, 10, 10);
 	}
 
 	private void gameFinished(Graphics2D g2d) {
@@ -156,6 +162,7 @@ public class BreakoutBoard extends JPanel implements Board {
 		FontMetrics fontMetrics = this.getFontMetrics(font);
 
 		g2d.setColor(Color.BLACK);
+		g2d.drawString("Score: " + getFitness() + "; Kills: " + kills, 10, 10);
 		g2d.setFont(font);
 		g2d.drawString(message, (Commons.WIDTH - fontMetrics.stringWidth(message)) / 2, Commons.WIDTH / 2);
 	}
@@ -194,7 +201,7 @@ public class BreakoutBoard extends JPanel implements Board {
 		}
 
 		if ((ball.getRect()).intersects(paddle.getRect())) {
-
+			paddleHits++;
 			int paddleLPos = (int) paddle.getRect().getMinX();
 			int ballLPos = (int) ball.getRect().getMinX();
 

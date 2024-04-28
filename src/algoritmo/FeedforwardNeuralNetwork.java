@@ -188,7 +188,7 @@ public class FeedforwardNeuralNetwork implements GameController {
 			double highestValue = outputLayer[0];
 
 			for (int i = 1; i < outputLayer.length; i++) {
-				if (outputLayer[i] > highestValue) {
+				if (outputLayer[i] >= highestValue) {
 					chosenMove = i;
 					highestValue = outputLayer[i];
 				}
