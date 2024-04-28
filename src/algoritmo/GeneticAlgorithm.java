@@ -41,7 +41,7 @@ public class GeneticAlgorithm {
 			// Sort the population by fitness
 			Arrays.sort(population, (a, b) -> (int) (b.getFitness() - a.getFitness()));
 			// Print the best solution of this generation
-			System.out.println("Generation " + i + ": " + population[0].getFitness());
+			System.out.println("Generation " + (i + 1) + ": " + population[0].getFitness());
 			// Create the next generation
 			for (int j = 0; j < POPULATION_SIZE; j++) {
 				// Select two parents from the population
