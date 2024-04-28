@@ -127,15 +127,15 @@ public class FeedforwardNeuralNetwork implements GameController {
 		// The for loop is intentionally swapped here so that the biases can also be
 		// generated without requiring an extra loop
 		for (int i = 0; i < hiddenDim; i++) {
-			hiddenBiases[i] = Math.random() / 2;
+			hiddenBiases[i] = Math.random() * 2 - 1;
 			for (int j = 0; j < inputDim; j++) {
-				hiddenWeights[j][i] = Math.random() / 2;
+				hiddenWeights[j][i] = Math.random() * 2 - 1;
 			}
 		}
 		for (int i = 0; i < outputDim; i++) {
-			outputBiases[i] = Math.random() / 2;
+			outputBiases[i] = Math.random() * 2 - 1;
 			for (int j = 0; j < hiddenDim; j++) {
-				outputWeights[j][i] = Math.random() / 2;
+				outputWeights[j][i] = Math.random() * 2 - 1;
 			}
 		}
 	}
