@@ -1,11 +1,12 @@
 package pacman;
 
 import java.awt.EventQueue;
+import java.io.FileNotFoundException;
 
 import javax.swing.JFrame;
 
 import algoritmo.FeedforwardNeuralNetwork;
-import utils.Commons;
+import algoritmo.GeneticAlgorithm;
 import utils.GameController;
 
 public class Pacman extends JFrame {
@@ -22,8 +23,8 @@ public class Pacman extends JFrame {
 		});
 	}
 
-	public static void main(String[] args) {
-		new Pacman(new FeedforwardNeuralNetwork(Commons.PACMAN_STATE_SIZE, Commons.PACMAN_HIDDEN_DIM,
-				Commons.PACMAN_NUM_ACTIONS), 1);
+	public static void main(String[] args) throws FileNotFoundException {
+		FeedforwardNeuralNetwork bestNetwork = GeneticAlgorithm.readFile("pacman.txt", 1)[0];
+		new Pacman(bestNetwork, 1);
 	}
 }

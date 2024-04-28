@@ -71,7 +71,7 @@ public class GeneticAlgorithm {
 		writePopulation(population, FILENAME);
 	}
 
-	private FeedforwardNeuralNetwork generateNetwork() {
+	private static FeedforwardNeuralNetwork generateNetwork() {
 		return BOARD_TYPE == BoardTypes.BREAKOUT
 				? new FeedforwardNeuralNetwork(Commons.BREAKOUT_STATE_SIZE, Commons.BREAKOUT_HIDDEN_DIM,
 						Commons.BREAKOUT_NUM_ACTIONS)
@@ -79,7 +79,7 @@ public class GeneticAlgorithm {
 						Commons.PACMAN_NUM_ACTIONS);
 	}
 
-	private FeedforwardNeuralNetwork generateNetwork(double[] values) {
+	private static FeedforwardNeuralNetwork generateNetwork(double[] values) {
 		return BOARD_TYPE == BoardTypes.BREAKOUT
 				? new FeedforwardNeuralNetwork(Commons.BREAKOUT_STATE_SIZE, Commons.BREAKOUT_HIDDEN_DIM,
 						Commons.BREAKOUT_NUM_ACTIONS, values)
@@ -146,14 +146,15 @@ public class GeneticAlgorithm {
 	/**
 	 * Reads the contents of the file and returns them as an array of FFNNs
 	 * The networks' simulations are ran in this function
-	 * Throws an exception if the file doesn't have POPULATION_SIZE lines
+	 * Throws an exception if the file doesn't have at least populationSize lines
 	 */
-	private FeedforwardNeuralNetwork[] readFile(String filename) throws FileNotFoundException {
+	public static FeedforwardNeuralNetwork[] readFile(String filename, int populationSize)
+			throws FileNotFoundException {
 		try {
 			Scanner scanner = new Scanner(new File(filename));
-			FeedforwardNeuralNetwork[] population = new FeedforwardNeuralNetwork[POPULATION_SIZE];
+			FeedforwardNeuralNetwork[] population = new FeedforwardNeuralNetwork[populationSize];
 			int index = 0;
-			while (scanner.hasNextLine()) {
+			while (scanner.hasNextLine() && index < populationSize) {
 				String line = scanner.nextLine();
 				// Remove brackets
 				line = line.substring(1, line.length() - 1);
@@ -168,12 +169,17 @@ public class GeneticAlgorithm {
 				population[index++] = newNetwork;
 			}
 			scanner.close();
-			if (index != POPULATION_SIZE) {
-				throw new IllegalArgumentException("Invalid number of individuals in the file");
+			if (index < populationSize) {
+				throw new IllegalArgumentException(
+						"Invalid number of individuals in the file. Got " + index + ", expected " + populationSize);
 			}
 			return population;
 		} catch (FileNotFoundException e) {
 			throw e;
 		}
+	}
+
+	public FeedforwardNeuralNetwork[] readFile(String filename) throws FileNotFoundException {
+		return readFile(filename, POPULATION_SIZE);
 	}
 }

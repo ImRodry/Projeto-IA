@@ -1,7 +1,11 @@
 package breakout;
 
+import java.io.FileNotFoundException;
+
 import javax.swing.JFrame;
 
+import algoritmo.FeedforwardNeuralNetwork;
+import algoritmo.GeneticAlgorithm;
 import utils.GameController;
 
 public class Breakout extends JFrame {
@@ -17,5 +21,10 @@ public class Breakout extends JFrame {
 		setResizable(false);
 		pack();
 		setVisible(true);
+	}
+
+	public static void main(String[] args) throws FileNotFoundException {
+		FeedforwardNeuralNetwork bestNetwork = GeneticAlgorithm.readFile("breakout.txt", 1)[0];
+		new Breakout(bestNetwork, 1);
 	}
 }
