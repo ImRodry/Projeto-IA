@@ -73,7 +73,9 @@ public class FeedforwardNeuralNetwork implements GameController {
 			for (int j = 0; j < inputDim; j++) {
 				sum += inputValues[j] * hiddenWeights[j][i];
 			}
-			hiddenLayer[i] = sigmoid(sum + hiddenBiases[i]);
+			hiddenLayer[i] = (sum + hiddenBiases[i]);
+			if (inputDim == Commons.BREAKOUT_STATE_SIZE)
+				hiddenLayer[i] = sigmoid(hiddenLayer[i]);
 		}
 		double[] outputLayer = new double[outputDim];
 		for (int i = 0; i < outputDim; i++) {
@@ -81,7 +83,9 @@ public class FeedforwardNeuralNetwork implements GameController {
 			for (int j = 0; j < hiddenDim; j++)
 				sum += hiddenLayer[j] * outputWeights[j][i];
 
-			outputLayer[i] = sigmoid(sum + outputBiases[i]);
+			outputLayer[i] = (sum + outputBiases[i]);
+			if (inputDim == Commons.BREAKOUT_STATE_SIZE)
+				hiddenLayer[i] = sigmoid(hiddenLayer[i]);
 		}
 		return outputLayer;
 	}
