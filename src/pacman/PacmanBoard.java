@@ -153,7 +153,7 @@ public class PacmanBoard extends JPanel implements ActionListener, Board {
 	public void addNotify() {
 		super.addNotify();
 
-		initGame();
+		//initGame();
 	}
 
 	public void makeMove(int move) {
