@@ -14,14 +14,16 @@ import utils.Commons;
 
 public class GeneticAlgorithm {
 	private static final BoardTypes BOARD_TYPE = BoardTypes.BREAKOUT;
-	// The file size for 100 Pacman individuals is too large 
-	private static final int POPULATION_SIZE = BOARD_TYPE == BoardTypes.BREAKOUT ? 100  : 10;
+	// The file size for 100 Pacman individuals is too large
+	private static final int POPULATION_SIZE = BOARD_TYPE == BoardTypes.BREAKOUT ? 100 : 40;
 	private static final int NUM_GENERATIONS = 1000;
-	private static final double MUTATION_RATE = 0.25;
 	private static final int TOURNAMENT_SIZE = 20;
 	private static final String FILENAME = BOARD_TYPE == BoardTypes.BREAKOUT ? "breakout.txt" : "pacman.txt";
 	private static Random random = new Random();
 	private static FeedforwardNeuralNetwork bestSolution;
+	private double mutationRate = Commons.INITIAL_MUTATION_RATE;
+	private double lastFitness = 0;
+	private int sameFitnessCount = 0;
 
 	public GeneticAlgorithm() {
 		// Initialize the population
@@ -41,7 +43,21 @@ public class GeneticAlgorithm {
 			// Sort the population by fitness
 			Arrays.sort(population, (a, b) -> (int) (b.getFitness() - a.getFitness()));
 			// Print the best solution of this generation
-			System.out.println("Generation " + (i + 1) + ": " + population[0].getFitness());
+			double currentFitness = population[0].getFitness();
+			System.out.println("Generation " + (i + 1) + ": " + currentFitness);
+			// Check if the fitness is the same as the last generation
+			if (currentFitness == lastFitness)			
+				sameFitnessCount++;
+			else {
+				sameFitnessCount = 0;
+				mutationRate = Commons.INITIAL_MUTATION_RATE;
+			}
+			// If the fitness has been the same for more than 100 generations, increase the
+			// mutation rate
+			if (sameFitnessCount > 100)
+				mutationRate += 0.01;
+			else
+				lastFitness = currentFitness;
 			// Create the next generation
 			for (int j = 0; j < POPULATION_SIZE / 2; j++) {
 				// Select two parents from the population
@@ -115,7 +131,7 @@ public class GeneticAlgorithm {
 	private void mutate(double[] feedforwardNeuralNetwork) {
 		for (int i = 0; i < feedforwardNeuralNetwork.length; i++) {
 			// Random value between -MUTATION_RATE / 2 and MUTATION_RATE / 2
-			double mutationValue = (random.nextDouble() - 0.5) * MUTATION_RATE;
+			double mutationValue = (random.nextDouble() - 0.5) * mutationRate;
 			feedforwardNeuralNetwork[i] += mutationValue;
 		}
 	}
