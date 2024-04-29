@@ -6,6 +6,7 @@ import javax.swing.JFrame;
 
 import algoritmo.FeedforwardNeuralNetwork;
 import algoritmo.GeneticAlgorithm;
+import utils.Commons;
 import utils.GameController;
 
 public class Breakout extends JFrame {
@@ -25,6 +26,6 @@ public class Breakout extends JFrame {
 
 	public static void main(String[] args) throws FileNotFoundException {
 		FeedforwardNeuralNetwork bestNetwork = GeneticAlgorithm.readFile("breakout.txt", 1)[0];
-		new Breakout(bestNetwork, 1);
+		new Breakout(bestNetwork, Commons.SEED);
 	}
 }

@@ -7,6 +7,7 @@ import javax.swing.JFrame;
 
 import algoritmo.FeedforwardNeuralNetwork;
 import algoritmo.GeneticAlgorithm;
+import utils.Commons;
 import utils.GameController;
 
 public class Pacman extends JFrame {
@@ -25,6 +26,6 @@ public class Pacman extends JFrame {
 
 	public static void main(String[] args) throws FileNotFoundException {
 		FeedforwardNeuralNetwork bestNetwork = GeneticAlgorithm.readFile("pacman.txt", 1)[0];
-		new Pacman(bestNetwork, 1);
+		new Pacman(bestNetwork, Commons.SEED);
 	}
 }
