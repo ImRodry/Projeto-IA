@@ -87,10 +87,10 @@ public class GeneticAlgorithm {
 		new GeneticAlgorithm();
 		if (BOARD_TYPE == BoardTypes.PACMAN)
 			new Pacman(new FeedforwardNeuralNetwork(Commons.PACMAN_STATE_SIZE, Commons.PACMAN_HIDDEN_DIM,
-					Commons.PACMAN_NUM_ACTIONS, bestSolution.getNeuralNetwork()), 1);
+					Commons.PACMAN_NUM_ACTIONS, bestSolution.getNeuralNetwork()), Commons.SEED);
 		else
 			new Breakout(new FeedforwardNeuralNetwork(Commons.BREAKOUT_STATE_SIZE, Commons.BREAKOUT_HIDDEN_DIM,
-					Commons.BREAKOUT_NUM_ACTIONS, bestSolution.getNeuralNetwork()), 1);
+					Commons.BREAKOUT_NUM_ACTIONS, bestSolution.getNeuralNetwork()), Commons.SEED);
 	}
 
 	// Select the index of a parent from the population using tournament selection

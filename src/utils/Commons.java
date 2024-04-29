@@ -14,6 +14,7 @@ public interface Commons {
 	public static final int INIT_BALL_Y = 355;
 	public static final int PERIOD = 5;
 
+	public static final int SEED = 1;
 	public static final int BREAKOUT_STATE_SIZE = 7;
 	public static final int BREAKOUT_NUM_ACTIONS = 2;
 	public static final int BREAKOUT_HIDDEN_DIM = Math.round((BREAKOUT_STATE_SIZE + BREAKOUT_NUM_ACTIONS) / 2);
