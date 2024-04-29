@@ -21,7 +21,8 @@ public class GeneticAlgorithm {
 	private static final String FILENAME = BOARD_TYPE == BoardTypes.BREAKOUT ? "breakout.txt" : "pacman.txt";
 	private static Random random = new Random();
 	private static FeedforwardNeuralNetwork bestSolution;
-	private double mutationRate = Commons.INITIAL_MUTATION_RATE;
+	private final double MUTATION_RATE = 0.1;
+	private double mutationRateModifier = 0;
 	private double lastFitness = 0;
 	private int sameFitnessCount = 0;
 
@@ -50,14 +51,19 @@ public class GeneticAlgorithm {
 				sameFitnessCount++;
 			else {
 				sameFitnessCount = 0;
-				mutationRate = Commons.INITIAL_MUTATION_RATE;
-			}
-			// If the fitness has been the same for more than 100 generations, increase the
-			// mutation rate
-			if (sameFitnessCount > 20)
-				mutationRate += 0.01;
-			else
+				mutationRateModifier = 0;
 				lastFitness = currentFitness;
+			}
+			// If the fitness has been the same for more than 20 generations, increase the
+			// mutation rate
+			if (sameFitnessCount > 20) {
+				if (mutationRateModifier >= 1) {
+					System.out.println("Fitness is stuck, considering overfitted and ending evolution...");
+					break;
+				}
+				System.out.println("Fitness is stuck, increasing mutation rate...");
+				mutationRateModifier += 0.01;
+			}
 			// Create the next generation
 			for (int j = 0; j < POPULATION_SIZE / 2; j++) {
 				// Select two parents from the population
@@ -131,7 +137,7 @@ public class GeneticAlgorithm {
 	private void mutate(double[] feedforwardNeuralNetwork) {
 		for (int i = 0; i < feedforwardNeuralNetwork.length; i++) {
 			// Random value between -MUTATION_RATE / 2 and MUTATION_RATE / 2
-			double mutationValue = (random.nextDouble() - 0.5) * mutationRate;
+			double mutationValue = (random.nextDouble() - 0.5) * (MUTATION_RATE + mutationRateModifier);
 			feedforwardNeuralNetwork[i] += mutationValue;
 		}
 	}
