@@ -147,7 +147,7 @@ public class BreakoutBoard extends JPanel implements Board {
 						bricks[i].getImageHeight(), this);
 			}
 		}
-		g2d.drawString(getFitness() + "", 10, 10);
+		g2d.drawString("Score: " + getFitness() + "; Kills: " + kills, 10, 10);
 	}
 
 	private void gameFinished(Graphics2D g2d) {
@@ -156,6 +156,7 @@ public class BreakoutBoard extends JPanel implements Board {
 		FontMetrics fontMetrics = this.getFontMetrics(font);
 
 		g2d.setColor(Color.BLACK);
+		g2d.drawString("Score: " + getFitness() + "; Kills: " + kills, 10, 10);
 		g2d.setFont(font);
 		g2d.drawString(message, (Commons.WIDTH - fontMetrics.stringWidth(message)) / 2, Commons.WIDTH / 2);
 	}
