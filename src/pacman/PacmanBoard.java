@@ -666,7 +666,7 @@ public class PacmanBoard extends JPanel implements ActionListener, Board {
 	}
 
 	public double getScore() {
-		return score * 1000 + steps / 100;
+		return score * 1000 + (double) steps / 100;
 	}
 
 	@Override
