@@ -77,6 +77,8 @@ public class FeedforwardNeuralNetwork implements GameController {
 			if (inputDim == Commons.BREAKOUT_STATE_SIZE)
 				hiddenLayer[i] = sigmoid(hiddenLayer[i]);
 		}
+		if (inputDim == Commons.PACMAN_STATE_SIZE)
+			hiddenLayer = softmax(hiddenLayer);
 		double[] outputLayer = new double[outputDim];
 		for (int i = 0; i < outputDim; i++) {
 			double sum = 0;
@@ -92,6 +94,26 @@ public class FeedforwardNeuralNetwork implements GameController {
 
 	private double sigmoid(double z) {
 		return 1 / (1 + Math.exp(-z));
+	}
+
+	// Calculates the softmax of an array of values. Softmax formula is as follows
+	// softmax(x) = e^x / sum(e^x)
+	public static double[] softmax(double[] values) {
+		double[] softmax = new double[values.length];
+		double sum = 0.0;
+
+		// First, calculate the exponential of each value as well as the total sum
+		for (int i = 0; i < values.length; i++) {
+			softmax[i] = Math.exp(values[i]);
+			sum += softmax[i];
+		}
+
+		// Divide the calculated exponential of each value by the total sum
+		for (int i = 0; i < values.length; i++) {
+			softmax[i] = softmax[i] / sum;
+		}
+
+		return softmax;
 	}
 
 	public double[] getNeuralNetwork() {
