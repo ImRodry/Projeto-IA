@@ -65,7 +65,7 @@ public class GeneticAlgorithm {
 				mutationRateModifier += 0.01;
 			}
 			// Create the next generation
-			for (int j = 0; j < POPULATION_SIZE / 2; j++) {
+			for (int j = 0; j < POPULATION_SIZE - TOURNAMENT_SIZE; j++) {
 				// Select two parents from the population
 				int parent1Index = selectParent();
 				int parent2Index = selectParent();
@@ -79,7 +79,7 @@ public class GeneticAlgorithm {
 				FeedforwardNeuralNetwork child = generateNetwork(childNetwork);
 				child.runSimulation();
 				// Add the child to the population
-				population[POPULATION_SIZE / 2 + j] = child;
+				population[TOURNAMENT_SIZE + j] = child;
 			}
 		}
 		// Print the best solution we found
